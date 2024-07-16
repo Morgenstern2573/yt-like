@@ -1,0 +1,38 @@
+.like-container {
+  border: 1px solid black;
+  padding: 0.5rem;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+#like-button {
+  appearance: none;
+  display: inline-block;
+  position: relative;
+}
+
+#thumbs-up {
+  display: inline-block;
+  width: 5rem;
+  height: 5rem;
+  fill: currentColor;
+  transform-origin: bottom left;
+}
+
+.starburst-anchor {
+  position: absolute;
+  width: 12px;
+  height: 15px;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  margin: 0;
+}
+
+.star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  scale: 0.5;
+}
