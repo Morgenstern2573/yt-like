@@ -1,8 +1,16 @@
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .like-container {
   border: 1px solid black;
   padding: 0.5rem;
   border-radius: 8px;
   width: fit-content;
+  perspective: 500px;
 }
 
 #like-button {
@@ -13,8 +21,8 @@
 
 #thumbs-up {
   display: inline-block;
-  width: 5rem;
-  height: 5rem;
+  width: 3rem;
+  height: 3rem;
   fill: currentColor;
   transform-origin: bottom left;
 }

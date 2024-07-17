@@ -1,6 +1,8 @@
 import gsap from "gsap";
+
 const STARCIRCLERADIUS = 20;
 const ANCHORCIRCLERADIUS = 50;
+
 const STARMARKUP = `<svg
    version="1.1"
    width="11"
@@ -70,24 +72,42 @@ function animate() {
     insertStarBurst(anchor);
   }
 
-  var tl = gsap.timeline();
-  tl.to("#thumbs-up", { duration: 0.5, color: "red", rotate: 10, scale: 0.5 });
-  tl.to("#thumbs-up", { duration: 1, color: "blue", rotate: -10, scale: 1.5 });
-  tl.to("#thumbs-up", { duration: 1, color: "black", rotate: 0, scale: 1 });
-
   var starTl = gsap.timeline();
-  // starTl.to(".starburst-anchor", {
-  //   x: "-50%",
-  //   y: "-50%",
-  //   opacity: 1,
-  //   color: "green",
-  // });
+  starTl.to("#thumbs-up", {
+    duration: 0.5,
+    color: "lime",
+    rotate: 10,
+    scale: 0.4,
+  });
+
+  starTl.to("#thumbs-up", {
+    duration: 1,
+    color: "blue",
+    rotate: -10,
+    scale: 1.5,
+  });
+  starTl.addLabel("burst", ">");
+
+  starTl.to("#thumbs-up", {
+    duration: 1,
+    color: "red",
+    rotate: -3,
+    scale: 0.9,
+  });
+
+  starTl.to("#thumbs-up", {
+    duration: 1,
+    color: "black",
+    rotate: 0,
+    scale: 1,
+  });
 
   starTl.fromTo(
     ".starburst-anchor",
     { x: "-50%", y: "-50%" },
     {
       duration: 0.5,
+      ease: "power1.in",
       x: function (index, target) {
         let theta = parseFloat(target.getAttribute("data-rot-angle"));
         let width = target.getBoundingClientRect().width;
@@ -113,37 +133,41 @@ function animate() {
       },
 
       opacity: 1,
-    }
+    },
+
+    "burst"
   );
 
-  starTl.to(".star", { duration: 0, x: "-50%", y: "-50%", scale: 0.5 });
+  starTl.to(".star", { duration: 0, x: "-50%", y: "-50%", scale: 0.5 }, ">");
 
-  starTl.to(".star", { duration: 0.1, opacity: 1 });
+  starTl.to(".star", { duration: 0.1, opacity: 1 }, ">");
 
-  starTl.to(".star", {
-    duration: 1,
-    x: function (index, target) {
-      let theta = 60 * (index + 1) * (Math.PI / 180);
-      // let height = star.offsetHeight
-      let width = target.getBoundingClientRect().width;
-      console.log(target);
-      let value = -(0.5 * width) + STARCIRCLERADIUS * Math.cos(theta);
-      console.log(index, "x", value);
-      return value;
+  starTl.to(
+    ".star",
+    {
+      duration: 1,
+      x: function (index, target) {
+        let theta = 60 * (index + 1) * (Math.PI / 180);
+        let width = target.getBoundingClientRect().width;
+        console.log(target);
+        let value = -(0.5 * width) + STARCIRCLERADIUS * Math.cos(theta);
+        console.log(index, "x", value);
+        return value;
+      },
+
+      y: function (index, target) {
+        let theta = 60 * (index + 1) * (Math.PI / 180);
+        let height = target.getBoundingClientRect().height;
+
+        let value = -(0.5 * height) + STARCIRCLERADIUS * Math.sin(theta);
+        console.log(index, "y", value);
+        return value;
+      },
     },
+    ">"
+  );
 
-    y: function (index, target) {
-      let theta = 60 * (index + 1) * (Math.PI / 180);
-      let height = target.getBoundingClientRect().height;
-
-      let value = -(0.5 * height) + STARCIRCLERADIUS * Math.sin(theta);
-      console.log(index, "y", value);
-      return value;
-    },
-  });
-
-  starTl.to(".starburst-anchor", { duration: 0.25, opacity: 0 });
-  // starTl.to(".star", { duration: 0.5, opacity: 0 }, "<");
+  starTl.to(".starburst-anchor", { duration: 0.25, opacity: 0 }, ">");
 }
 
 function insertStarBurst(target) {
@@ -162,8 +186,8 @@ function insertStarBurst(target) {
 
 function insertAnchors() {
   const container = document.getElementById("like-button");
-  for (let i = 0; i < 5; i++) {
-    let theta = (360 / 5) * (i + 1) * (Math.PI / 180);
+  for (let i = 0; i < 4; i++) {
+    let theta = (360 / 4) * (i + 1) * (Math.PI / 180);
 
     let myDiv = document.createElement("div");
     myDiv.innerHTML = ANCHORMARKUP.trim();
