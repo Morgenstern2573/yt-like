@@ -86,7 +86,9 @@ function animate() {
     rotate: -10,
     scale: 1.5,
   });
-  starTl.addLabel("burst", ">");
+
+  starTl.addLabel("burstStart", "<25%");
+  starTl.addLabel("burstEnd", ">");
 
   starTl.to("#thumbs-up", {
     duration: 1,
@@ -108,6 +110,7 @@ function animate() {
     {
       duration: 0.5,
       ease: "power1.in",
+      stagger: 0.05,
       x: function (index, target) {
         let theta = parseFloat(target.getAttribute("data-rot-angle"));
         let width = target.getBoundingClientRect().width;
@@ -126,26 +129,33 @@ function animate() {
         return value;
       },
 
-      rotate: function (index, target) {
-        return (
-          (parseFloat(target.getAttribute("data-rot-angle")) / Math.PI) * 180
-        );
-      },
-
       opacity: 1,
+      scale: 1.2,
+
+      color: function (index) {
+        if (index % 2 == 0) {
+          return "lime";
+        } else {
+          return "blue";
+        }
+      },
     },
 
-    "burst"
+    "burstStart"
   );
 
-  starTl.to(".star", { duration: 0, x: "-50%", y: "-50%", scale: 0.5 }, ">");
+  starTl.to(
+    ".star",
+    { duration: 0, x: "-50%", y: "-50%", scale: 0.5, color: "red" },
+    ">"
+  );
 
   starTl.to(".star", { duration: 0.1, opacity: 1 }, ">");
 
   starTl.to(
     ".star",
     {
-      duration: 1,
+      duration: 0.5,
       x: function (index, target) {
         let theta = 60 * (index + 1) * (Math.PI / 180);
         let width = target.getBoundingClientRect().width;
@@ -164,7 +174,8 @@ function animate() {
         return value;
       },
     },
-    ">"
+
+    "burstEnd"
   );
 
   starTl.to(".starburst-anchor", { duration: 0.25, opacity: 0 }, ">");
@@ -188,6 +199,7 @@ function insertAnchors() {
   const container = document.getElementById("like-button");
   for (let i = 0; i < 4; i++) {
     let theta = (360 / 4) * (i + 1) * (Math.PI / 180);
+    theta += Math.random();
 
     let myDiv = document.createElement("div");
     myDiv.innerHTML = ANCHORMARKUP.trim();
